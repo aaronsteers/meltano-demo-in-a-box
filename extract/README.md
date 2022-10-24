@@ -6,7 +6,7 @@
 
 Before you start, you'll need to tell snowflake how to connect. The `/.env/template` file has credentials which you can override for your own environment.
 
-The test data used is from the Snowlake Sample DB. If you've not already done so, you may need to map the DB in your Snowflake admin console and grant access to the specific role which you'll be using for testing.
+The test data used is from the Snowflake Sample DB. If you've not already done so, you may need to map the DB in your Snowflake admin console and grant access to the specific role which you'll be using for testing.
 
 ### Testing process
 
@@ -15,13 +15,21 @@ This project is configured with two instances of tap-snowflake: one with and one
 To test _with_ Snowflake batching enabled:
 
 ```console
-time meltano invoke tap-snowflake-w-batch > batch-enabled-output01.singer.jsonl
+# First refresh the catalog (if needed) and print the select rules:
+time meltano select tap-snowflake-w-batch --list
+
+# Next run the extraction:
+time meltano invoke tap-snowflake-w-batch > ./output/batch-enabled-output01.singer.jsonl
 ```
 
 To test _without_ Snowflake batching enabled:
 
 ```console
-time meltano invoke tap-snowflake > batch-disabled-output01.singer.jsonl
+# First refresh the catalog (if needed) and print the select rules:
+time meltano select tap-snowflake --list
+
+# Next run the extraction:
+time meltano invoke tap-snowflake > ./output/batch-disabled-output01.singer.jsonl
 ```
 
 ### About the data

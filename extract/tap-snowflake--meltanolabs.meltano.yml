@@ -37,12 +37,13 @@ plugins:
       database: SNOWFLAKE_SAMPLE_DATA
       warehouse: DEFAULT_WH
     select:
-    # Four dataset sizes available:
-    # TPCH_SF1:      1.5M rows (exactly)
-    # TPCH_SF10:    15.0M rows (exactly)
-    # TPCH_SF100:  150.0M rows (exactly)
-    # TPCH_SF1000:   1.5B rows (exactly)
-    - "tpch_sf10-orders.*"
+    # Four dataset sizes available.
+    # Start with the smallest dataset. During each test, comment out all the others to
+    # ensure consistent and accurate results.
+    - "tpch_sf1-orders.*"         # TPCH_SF1:      1.5M rows (exactly)
+    # - "tpch_sf10-orders.*"        # TPCH_SF10:    15.0M rows (exactly)
+    # - "tpch_sf100-orders.*"       # TPCH_SF100:  150.0M rows (exactly)
+    # - "tpch_sf1000-orders.*"      # TPCH_SF1000:   1.5B rows (exactly)
   - name: tap-snowflake-w-batch
     inherit_from: tap-snowflake
     config:
