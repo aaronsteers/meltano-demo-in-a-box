@@ -1,0 +1,55 @@
+plugins:
+  extractors:
+  - name: tap-snowflake
+    namespace: tap_snowflake
+    # Based on not-yet merged PR:
+    # https://github.com/MeltanoLabs/tap-snowflake/pull/2
+    pip_url: git+https://github.com/MeltanoLabs/tap-snowflake.git@working-mvp
+    capabilities:
+    - state
+    - catalog
+    - discover
+    settings:
+    - name: user
+    - name: password
+      kind: password
+    - name: account
+      kind: password
+    - name: role
+    - name: warehouse
+    - name: database
+    - name: schema
+    - name: batch_config
+      kind: object
+    - name: batch_config.encoding.format
+      kind: string
+    - name: batch_config.encoding.compression
+      kind: string
+    - name: batch_config.storage.root
+      kind: string
+    - name: batch_config.storage.prefix
+      kind: string
+    config:
+      user: ${SF_USER}
+      password: ${SF_PASSWORD}
+      account: ${SF_ACCOUNT}
+      role: DEVTEST
+      database: SNOWFLAKE_SAMPLE_DATA
+      warehouse: DEFAULT_WH
+    select:
+    # Four dataset sizes available:
+    # TPCH_SF1:      1.5M rows (exactly)
+    # TPCH_SF10:    15.0M rows (exactly)
+    # TPCH_SF100:  150.0M rows (exactly)
+    # TPCH_SF1000:   1.5B rows (exactly)
+    - "tpch_sf10-orders.*"
+  - name: tap-snowflake-w-batch
+    inherit_from: tap-snowflake
+    config:
+      batch_config:
+        encoding:
+          format: jsonl
+          compression: gzip
+        storage:
+          root: file://./output/tap-snowflake-w-batch/
+          prefix: batch-test
