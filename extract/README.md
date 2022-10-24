@@ -6,7 +6,12 @@
 
 Before you start, you'll need to tell snowflake how to connect. The `/.env/template` file has credentials which you can override for your own environment.
 
-The test data used is from the Snowflake Sample DB. If you've not already done so, you may need to map the DB in your Snowflake admin console and grant access to the specific role which you'll be using for testing.
+The test data used is [TPC-H data](https://docs.snowflake.com/en/user-guide/sample-data-tpch.html) from the Snowflake Sample DB. If you've not already done so, you may need to [map the DB in your Snowflake admin console](https://docs.snowflake.com/en/user-guide/sample-data-using.html) and grant access to the specific role which you'll be using for testing.
+
+```sql
+CREATE DATABASE snowflake_sample_data FROM share sfc_samples.sample_data;
+GRANT imported privileges ON DATABASE snowflake_sample_data TO ROLE public;
+```
 
 ### Testing process
 
