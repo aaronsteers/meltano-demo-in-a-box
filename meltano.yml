@@ -113,6 +113,11 @@ plugins:
       initialize:
         args: initialize
         executable: dbt_extension
+      run-elo_rollforward:
+        args: run-operation elo_rollforward
+        executable: dbt_extension
+      build-parquet:
+        args: build --target parquet
 schedules:
 - name: spreadsheets-anywhere-to-duckdb
   interval: '@once'
@@ -121,3 +126,17 @@ schedules:
   transform: skip
   start_date: 2022-10-01 18:08:45.303947
 project_id: 0f7b47e6-7268-4193-9522-1773c1ee9fee
+# Invoke jobs with `meltano run JOB_NAME`
+jobs:
+- name: run-all
+  tasks:
+  - tap-spreadsheets-anywhere target-duckdb dbt-duckdb:build
+- name: run-parquet
+  tasks:
+  - tap-spreadsheets-anywhere target-parquet
+  - dbt-duckdb:build-parquet
+- name: pipeline
+  tasks:
+  - tap-spreadsheets-anywhere target-duckdb
+  - dbt-duckdb:run-elo_rollforward
+  - dbt-duckdb:build
