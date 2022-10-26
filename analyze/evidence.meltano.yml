@@ -23,7 +23,7 @@ plugins:
         args: ""
         container_spec:
           image: evidencedev/devenv:latest
-          command: init
+          command: --init
           volumes:
           - $MELTANO_PROJECT_ROOT/analyze/evidence/:/evidence-workspace/
       dev:
