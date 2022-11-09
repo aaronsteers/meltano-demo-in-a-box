@@ -1,0 +1,5 @@
+log
+stage.db
+stage.db.wal
+state
+.DS_Store
