@@ -118,6 +118,10 @@ plugins:
         executable: dbt_extension
       build-parquet:
         args: build --target parquet
+  mappers:
+    - name: meltano-map-transformer
+      variant: meltano
+      pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git
 schedules:
 - name: spreadsheets-anywhere-to-duckdb
   interval: '@once'
