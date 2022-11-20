@@ -1,5 +1,7 @@
 version: 1
 default_environment: dev
+include_paths:
+- ./analyze/*.meltano.yml
 environments:
 - name: dev
 - name: staging
