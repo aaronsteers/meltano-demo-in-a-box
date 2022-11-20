@@ -121,7 +121,7 @@ plugins:
   mappers:
     - name: meltano-map-transformer
       variant: meltano
-      pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git
+      pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git@chore-sdk-v0.14.0
 schedules:
 - name: spreadsheets-anywhere-to-duckdb
   interval: '@once'
