@@ -62,6 +62,13 @@ plugins:
       file_size: 100000
       compression_method: snappy
       streams_in_separate_folder: true
+  # To aid in EL debugging:
+  - name: target-jsonl
+    variant: andyh1203
+    pip_url: target-jsonl
+    config:
+      output: $MELTANO_PROJECT_ROOT/output
+      do_timestamp_file: true
   utilities:
   - name: superset
     variant: apache
@@ -118,6 +125,29 @@ plugins:
         executable: dbt_extension
       build-parquet:
         args: build --target parquet
+  mappers:
+  - name: meltano-map-transformer
+    variant: meltano
+    pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git@chore-sdk-v0.14.0
+    mappings:
+    - name: add-timestamps
+      # This adds timestamp columns to all of the named streams
+      # Debug by running:
+      # % meltano run --full-refresh tap-spreadsheets-anywhere add-timestamps target-jsonl
+      config:
+        stream_maps:
+          latest_RAPTOR_by_player:
+            _sdc_extracted_at: datetime.datetime.utcnow().isoformat()
+          latest_RAPTOR_by_team:
+            _sdc_extracted_at: datetime.datetime.utcnow().isoformat()
+          nba_elo_latest:
+            _sdc_extracted_at: datetime.datetime.utcnow().isoformat()
+          nba_schedule_2023:
+            _sdc_extracted_at: datetime.datetime.utcnow().isoformat()
+          team_ratings:
+            _sdc_extracted_at: datetime.datetime.utcnow().isoformat()
+          xf_series_to_seed:
+            _sdc_extracted_at: datetime.datetime.utcnow().isoformat()
 schedules:
 - name: spreadsheets-anywhere-to-duckdb
   interval: '@once'
@@ -133,13 +163,13 @@ project_id: 0f7b47e6-7268-4193-9522-1773c1ee9fee
 jobs:
 - name: run-all
   tasks:
-  - tap-spreadsheets-anywhere target-duckdb dbt-duckdb:build
+  - tap-spreadsheets-anywhere add-timestamps target-duckdb dbt-duckdb:build
 - name: run-parquet
   tasks:
-  - tap-spreadsheets-anywhere target-parquet
+  - tap-spreadsheets-anywhere add-timestamps target-parquet
   - dbt-duckdb:build-parquet
 - name: pipeline
   tasks:
-  - tap-spreadsheets-anywhere target-duckdb
+  - tap-spreadsheets-anywhere add-timestamps target-duckdb
   - dbt-duckdb:run-elo_rollforward
   - dbt-duckdb:build

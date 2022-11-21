@@ -28,6 +28,6 @@ jobs:
 
       - name: build pipeline
         run: |
-          meltano run tap-spreadsheets-anywhere target-duckdb --full-refresh
+          meltano run tap-spreadsheets-anywhere add-timestamps target-duckdb --full-refresh
           meltano invoke dbt-duckdb run-operation elo_rollforward
           meltano run dbt-duckdb:build

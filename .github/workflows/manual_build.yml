@@ -33,5 +33,5 @@ jobs:
         run: meltano install
 
       - name: build pipeline
-        run: meltano run tap-spreadsheets-anywhere target-duckdb dbt-duckdb:build
+        run: meltano run tap-spreadsheets-anywhere add-timestamps target-duckdb dbt-duckdb:build
         
