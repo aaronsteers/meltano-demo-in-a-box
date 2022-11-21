@@ -53,7 +53,7 @@ meltano run superset:ui
 ## Running your pipeline on demand
 After your run ```make pipeline```, you can run your pipeline again at any time with the following meltano command:
 ```
-meltano run tap-spreadsheets-anywhere target-duckdb --full-refresh dbt-duckdb:build
+meltano run tap-spreadsheets-anywhere add-timestamps target-duckdb --full-refresh dbt-duckdb:build
 ```
 
 ## Using Parquet instead of a database
