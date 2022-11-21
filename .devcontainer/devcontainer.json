@@ -2,17 +2,55 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
 {
 	"name": "Meltano MDS",
+    "image": "mcr.microsoft.com/devcontainers/python:3.10",
 
-	// Sets the run context to one level up instead of the .devcontainer folder.
-	"context": "..",
-	"build": {
-        "args": {
-            "VARIANT": "3.9",
+    // // Uncomment this section if you prefer to build a custom base image:
+	// // Sets the run context to one level up instead of the .devcontainer folder:
+	// "build": {
+    //     "args": {
+    //         // Image build args:
+    //         "VARIANT": "3.9",
+    //     }
+    // },
+    // "context": "..",
+	// // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename:
+	// "dockerFile": "Dockerfile.dev-container",
+
+    "features": {
+		"ghcr.io/devcontainers/features/node:1": {
+            // Some VS Code extensions require Node libraries
+			"version": "lts"
+		},
+        "ghcr.io/devcontainers/features/docker-in-docker:1": {
+            // Allows child containers
+        },
+        "ghcr.io/devcontainers-contrib/features/meltano:1": {
+            // Installs Meltano
+            "version": "latest"
         }
     },
 
-	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-	"dockerFile": "Dockerfile.dev-container",
+    "postCreateCommand": "meltano install",
+
+    "extensions": [
+        // Standard plugins for Meltano projects:
+        "bastienboutonnet.vscode-dbt",
+        "github.vscode-pull-request-github",
+        "innoverio.vscode-dbt-power-user",
+        "mechatroner.rainbow-csv",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "redhat.vscode-yaml",
+        "samuelcolvin.jinjahtml",
+        "visualstudioexptteam.vscodeintellicode",
+
+        // Additional extensions for this project:
+        "GitHub.copilot",
+        "ms-vscode.makefile-tools",
+        "vivaxy.vscode-conventional-commits",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig"
+    ],
     "settings": {
         "python.pythonPath": "/usr/local/bin/python",
         "python.languageServer": "Pylance",
@@ -22,37 +60,10 @@
         }
         // any other settings go here
     },
-    "extensions": [
-        "ms-python.python",
-        "ms-python.vscode-pylance",
-        "redhat.vscode-yaml",
-        "ms-vscode.makefile-tools",
-        "EditorConfig.EditorConfig",
-        "samuelcolvin.jinjahtml",
-        "innoverio.vscode-dbt-power-user",
-        "github.vscode-pull-request-github",
-        "eamodio.gitlens",
-        "GitHub.copilot",
-        "visualstudioexptteam.vscodeintellicode",
-        "bastienboutonnet.vscode-dbt",
-        "vivaxy.vscode-conventional-commits",
-        "mechatroner.rainbow-csv"
-    ],
-    // Use 'forwardPorts' to make a list of ports inside the container available locally.
-    // "forwardPorts": [],
-
-    "postCreateCommand": "meltano install",
 
     // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
     // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 
-    "features": {
-        "github-cli": {
-            "version": "latest"
-        },
-        "ghcr.io/devcontainers/features/docker-in-docker:1": {},
-	"ghcr.io/devcontainers-contrib/features/meltano:1": {
-	    "version": "latest"
-	}
-    }
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
 }
