@@ -131,6 +131,7 @@ plugins:
     pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git@chore-sdk-v0.14.0
     mappings:
     - name: add-timestamps
+      # This adds timestamp columns to all of the named streams
       # Debug by running:
       # % meltano run --full-refresh tap-spreadsheets-anywhere add-timestamps target-jsonl
       config:
@@ -162,13 +163,13 @@ project_id: 0f7b47e6-7268-4193-9522-1773c1ee9fee
 jobs:
 - name: run-all
   tasks:
-  - tap-spreadsheets-anywhere target-duckdb dbt-duckdb:build
+  - tap-spreadsheets-anywhere add-timestamps target-duckdb dbt-duckdb:build
 - name: run-parquet
   tasks:
-  - tap-spreadsheets-anywhere target-parquet
+  - tap-spreadsheets-anywhere add-timestamps target-parquet
   - dbt-duckdb:build-parquet
 - name: pipeline
   tasks:
-  - tap-spreadsheets-anywhere target-duckdb
+  - tap-spreadsheets-anywhere add-timestamps target-duckdb
   - dbt-duckdb:run-elo_rollforward
   - dbt-duckdb:build
