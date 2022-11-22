@@ -7,8 +7,8 @@
     ],
 
     // "python.defaultInterpreterPath": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
-    "dbt.dbtPythonPathOverride": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
-    "dbt.profilesDirOverride": "${workspaceFolder}/transform/profiles/duckdb",
+    "dbt.dbtPythonPathOverride": "./.meltano/utilities/dbt-duckdb/venv/bin/python",
+    "dbt.profilesDirOverride": "./transform/profiles/duckdb",
     // "dbt.versionCheck": "neither",
     "files.associations": {
         "*.sql": "jinja-sql"
