@@ -71,14 +71,15 @@ plugins:
   - name: dbt-duckdb
     namespace: dbt_ext
     label: dbt duckdb extension
-    pip_url: dbt-core~=1.2.0 dbt-duckdb~=1.2.0 git+https://github.com/meltano/dbt-ext.git
+    pip_url: dbt-core~=1.3.1 dbt-duckdb~=1.3.1 git+https://github.com/meltano/dbt-ext.git
     executable: dbt_invoker
     config:
       path: /tmp/mdsbox.db
     settings:
     - name: project_dir
-      value: $MELTANO_PROJECT_ROOT/transform
+      value: $MELTANO_PROJECT_ROOT
       label: Projects Directory
+      env: DBT_PROJECT_DIR
     - name: skip_pre_invoke
       kind: boolean
       value: true
@@ -91,9 +92,6 @@ plugins:
       env: DBT_PROFILES_DIR
       value: $MELTANO_PROJECT_ROOT/transform/profiles/duckdb
       label: Profiles Directory
-    - name: project_dir
-      label: Projects Directory
-      value: $MELTANO_PROJECT_ROOT/transform
     - name: path
       label: Path
       kind: string
@@ -115,7 +113,6 @@ plugins:
         executable: dbt_extension
       run-elo_rollforward:
         args: run-operation elo_rollforward
-        executable: dbt_extension
       build-parquet:
         args: build --target parquet
 schedules:
@@ -131,14 +128,11 @@ schedules:
 project_id: 0f7b47e6-7268-4193-9522-1773c1ee9fee
 # Invoke jobs with `meltano run JOB_NAME`
 jobs:
-- name: run-all
-  tasks:
-  - tap-spreadsheets-anywhere target-duckdb dbt-duckdb:build
 - name: run-parquet
   tasks:
   - tap-spreadsheets-anywhere target-parquet
   - dbt-duckdb:build-parquet
-- name: pipeline
+- name: run-all
   tasks:
   - tap-spreadsheets-anywhere target-duckdb
   - dbt-duckdb:run-elo_rollforward

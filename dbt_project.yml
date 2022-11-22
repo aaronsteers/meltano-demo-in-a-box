@@ -4,24 +4,24 @@ profile: meltano
 config-version: 2
 require-dbt-version: [">=1.0.0", "<2.0.0"]
 model-paths:
-- models
+- transform/models
 analysis-paths:
-- analysis
+- transform/analysis
 test-paths:
-- tests
+- transform/tests
 seed-paths:
-- data
+- transform/data
 macro-paths:
-- macros
+- transform/macros
 snapshot-paths:
-- snapshots
-target-path: ../docs
-log-path: logs
-packages-install-path: dbt_packages
+- transform/snapshots
+target-path: transform/docs
+log-path: transform/logs
+packages-install-path: transform/dbt_packages
 clean-targets:
-- ../docs
-- dbt_packages
-- logs
+- transform/docs
+- transform/logs
+- transform/dbt_packages
 models:
   nba_monte_carlo:
     prep:

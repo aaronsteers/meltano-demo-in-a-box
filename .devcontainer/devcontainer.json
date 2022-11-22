@@ -1,49 +1,78 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
 {
-	"name": "Meltano MDS",
+	"name": "Meltano MDS Container",
+    "image": "mcr.microsoft.com/devcontainers/python:3.10",
 
-	// Sets the run context to one level up instead of the .devcontainer folder.
-	"context": "..",
-	"build": {
-        "args": {
-            "VARIANT": "3.9",
+    // // Uncomment this section if you prefer to build a custom base image:
+	// // Sets the run context to one level up instead of the .devcontainer folder:
+	// "build": {
+    //     "args": {
+    //         // Image build args:
+    //         "VARIANT": "3.9",
+    //     }
+    // },
+    // "context": "..",
+	// // Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename:
+	// "dockerFile": "Dockerfile.dev-container",
+
+    "features": {
+		"ghcr.io/devcontainers/features/node:1": {
+            // Some VS Code extensions require Node libraries
+			"version": "lts"
+		},
+        "ghcr.io/devcontainers-contrib/features/meltano:1": {
+            // Installs Meltano
+            "version": "latest"
         }
+        // Uncomment to support child containers:
+        // "ghcr.io/devcontainers/features/docker-in-docker:1": {
+        //     // Allows child containers
+        // },
     },
 
-	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-	"dockerFile": "Dockerfile.dev-container",
-    "settings": {
-        "python.pythonPath": "/usr/local/bin/python",
-        "python.languageServer": "Pylance",
-        "dbt.profilesDirOverride": "/workspaces/nba-monte-carlo/transform/profiles/duckdb/",
-        "files.associations": {
-            "*.sql": "jinja-sql"
-        }
-        // any other settings go here
-    },
+    "postCreateCommand": "meltano install utility dbt-duckdb && meltano invoke dbt-duckdb clean && meltano invoke dbt-duckdb compile",
+
     "extensions": [
+        // Standard plugins for Meltano projects:
+        "bastienboutonnet.vscode-dbt",
+        "github.vscode-pull-request-github",
+        "innoverio.vscode-dbt-power-user",
+        "mechatroner.rainbow-csv",
         "ms-python.python",
         "ms-python.vscode-pylance",
         "redhat.vscode-yaml",
-        "ms-vscode.makefile-tools",
-        "EditorConfig.EditorConfig",
         "samuelcolvin.jinjahtml",
-        "innoverio.vscode-dbt-power-user",
-        "github.vscode-pull-request-github",
-        "eamodio.gitlens",
-        "GitHub.copilot",
         "visualstudioexptteam.vscodeintellicode",
-        "bastienboutonnet.vscode-dbt",
-        "vivaxy.vscode-conventional-commits",
-        "mechatroner.rainbow-csv"
+        "z3z1ma.vscode-dbt-power-user-osmosis",
+        "Fivetran.dbt-language-server",
+        "mtxr.sqltools"
+
+        // // Additional extensions for this project:
+        // "GitHub.copilot",
+        // "ms-vscode.makefile-tools",
+        // "vivaxy.vscode-conventional-commits",
+        // "eamodio.gitlens",
+        // "EditorConfig.EditorConfig"
     ],
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+    "containerEnv": {
+        "DBT_CMD": "meltano invoke dbt-duckdb",
+        "DBT_PLUGIN": "dbt-duckdb"
+    },
+    "settings": {
+        // "python.defaultInterpreterPath": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
+        "dbt.dbtPythonPathOverride": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
+        "dbt.profilesDirOverride": "${workspaceFolder}/transform/profiles/duckdb",
+        "files.associations": {
+            "*.sql": "jinja-sql"
+        }
+        // any other settings go here:
+        // "python.languageServer": "Pylance",
+    }
 
-	// Uncomment the next line to run commands after the container is created - for example installing curl.
-	"postCreateCommand": "pip3 install pipx && pipx install meltano"
+    // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+    // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 
-	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
-	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
 }

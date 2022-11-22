@@ -4,5 +4,22 @@
         "L016",
         "L031",
         "L034"
-    ]
+    ],
+
+    // "python.defaultInterpreterPath": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
+    "dbt.dbtPythonPathOverride": "./.meltano/utilities/dbt-duckdb/venv/bin/python",
+    "dbt.profilesDirOverride": "./transform/profiles/duckdb",
+    // "dbt.versionCheck": "neither",
+    "files.associations": {
+        "*.sql": "jinja-sql"
+    }
+    // "terminal.integrated.env.osx": {
+    //     "DBT_PROJECT_DIR": "${workspaceFolder}/transform"
+    // },
+    // "terminal.integrated.env.linux": {
+    //     "DBT_PROJECT_DIR": "${workspaceFolder}/transform"
+    // },
+    // "terminal.integrated.env.["osx", "linux", "windows"]": {
+    //     "DBT_PROFILES_DIR": "/home/path/to/dir/dbt/profiles"
+    // }
 }
