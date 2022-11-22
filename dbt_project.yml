@@ -1,0 +1,33 @@
+name: nba_monte_carlo
+version: '1.0'
+profile: meltano
+config-version: 2
+require-dbt-version: [">=1.0.0", "<2.0.0"]
+model-paths:
+- transform/models
+analysis-paths:
+- transform/analysis
+test-paths:
+- transform/tests
+seed-paths:
+- transform/data
+macro-paths:
+- transform/macros
+snapshot-paths:
+- transform/snapshots
+target-path: transform/docs
+log-path: transform/logs
+packages-install-path: transform/dbt_packages
+clean-targets:
+- transform/docs
+- transform/logs
+- transform/dbt_packages
+models:
+  nba_monte_carlo:
+    prep:
+      schema: prep
+
+vars:
+  scenarios: 10000
+  include_actuals: true
+  latest_ratings: true

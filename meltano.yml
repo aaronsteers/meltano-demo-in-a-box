@@ -71,14 +71,15 @@ plugins:
   - name: dbt-duckdb
     namespace: dbt_ext
     label: dbt duckdb extension
-    pip_url: dbt-core~=1.2.0 dbt-duckdb~=1.2.0 git+https://github.com/meltano/dbt-ext.git
+    pip_url: dbt-core~=1.3.1 dbt-duckdb~=1.3.1 git+https://github.com/meltano/dbt-ext.git
     executable: dbt_invoker
     config:
       path: /tmp/mdsbox.db
     settings:
     - name: project_dir
-      value: $MELTANO_PROJECT_ROOT/transform
+      value: $MELTANO_PROJECT_ROOT
       label: Projects Directory
+      env: DBT_PROJECT_DIR
     - name: skip_pre_invoke
       kind: boolean
       value: true
@@ -91,9 +92,6 @@ plugins:
       env: DBT_PROFILES_DIR
       value: $MELTANO_PROJECT_ROOT/transform/profiles/duckdb
       label: Profiles Directory
-    - name: project_dir
-      label: Projects Directory
-      value: $MELTANO_PROJECT_ROOT/transform
     - name: path
       label: Path
       kind: string
