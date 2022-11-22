@@ -60,9 +60,9 @@
         "DBT_PLUGIN": "dbt-duckdb"
     },
     "settings": {
-        "python.pythonPath": "/workspaces/meltano-demo-in-a-box/.meltano/utilities/dbt-duckdb/venv/bin/python",
-        "dbt.dbtPythonPathOverride": "/workspaces/meltano-demo-in-a-box/.meltano/utilities/dbt-duckdb/venv/bin/python",
-        "dbt.profilesDirOverride": "/workspaces/meltano-demo-in-a-box/transform/profiles/duckdb/",
+        // "python.defaultInterpreterPath": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
+        "dbt.dbtPythonPathOverride": "${workspaceFolder}/.meltano/utilities/dbt-duckdb/venv/bin/python",
+        "dbt.profilesDirOverride": "${workspaceFolder}/transform/profiles/duckdb",
         "files.associations": {
             "*.sql": "jinja-sql"
         }
