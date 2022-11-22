@@ -31,7 +31,7 @@
         // },
     },
 
-    "postCreateCommand": "meltano install utility dbt-duckdb",
+    "postCreateCommand": "meltano install utility dbt-duckdb && meltano invoke dbt-duckdb clean && meltano invoke dbt-duckdb compile",
 
     "extensions": [
         // Standard plugins for Meltano projects:
