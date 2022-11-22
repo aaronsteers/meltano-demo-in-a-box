@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
 {
-	"name": "Meltano MDS",
+	"name": "Meltano MDS Container",
     "image": "mcr.microsoft.com/devcontainers/python:3.10",
 
     // // Uncomment this section if you prefer to build a custom base image:
@@ -21,16 +21,17 @@
             // Some VS Code extensions require Node libraries
 			"version": "lts"
 		},
-        "ghcr.io/devcontainers/features/docker-in-docker:1": {
-            // Allows child containers
-        },
         "ghcr.io/devcontainers-contrib/features/meltano:1": {
             // Installs Meltano
             "version": "latest"
         }
+        // Uncomment to support child containers:
+        // "ghcr.io/devcontainers/features/docker-in-docker:1": {
+        //     // Allows child containers
+        // },
     },
 
-    "postCreateCommand": "meltano install",
+    "postCreateCommand": "meltano install utility dbt-duckdb",
 
     "extensions": [
         // Standard plugins for Meltano projects:
@@ -43,23 +44,31 @@
         "redhat.vscode-yaml",
         "samuelcolvin.jinjahtml",
         "visualstudioexptteam.vscodeintellicode",
+        "z3z1ma.vscode-dbt-power-user-osmosis",
+        "Fivetran.dbt-language-server",
+        "mtxr.sqltools"
 
-        // Additional extensions for this project:
-        "GitHub.copilot",
-        "ms-vscode.makefile-tools",
-        "vivaxy.vscode-conventional-commits",
-        "eamodio.gitlens",
-        "EditorConfig.EditorConfig"
+        // // Additional extensions for this project:
+        // "GitHub.copilot",
+        // "ms-vscode.makefile-tools",
+        // "vivaxy.vscode-conventional-commits",
+        // "eamodio.gitlens",
+        // "EditorConfig.EditorConfig"
     ],
+    "containerEnv": {
+        "DBT_CMD": "meltano invoke dbt-duckdb",
+        "DBT_PLUGIN": "dbt-duckdb"
+    },
     "settings": {
-        "python.pythonPath": "/usr/local/bin/python",
-        "python.languageServer": "Pylance",
-        "dbt.profilesDirOverride": "/workspaces/nba-monte-carlo/transform/profiles/duckdb/",
+        "python.pythonPath": "/workspaces/meltano-demo-in-a-box/.meltano/utilities/dbt-duckdb/venv/bin/python",
+        "dbt.dbtPythonPathOverride": "/workspaces/meltano-demo-in-a-box/.meltano/utilities/dbt-duckdb/venv/bin/python",
+        "dbt.profilesDirOverride": "/workspaces/meltano-demo-in-a-box/transform/profiles/duckdb/",
         "files.associations": {
             "*.sql": "jinja-sql"
         }
-        // any other settings go here
-    },
+        // any other settings go here:
+        // "python.languageServer": "Pylance",
+    }
 
     // Uncomment when using a ptrace-based debugger like C++, Go, and Rust
     // "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
